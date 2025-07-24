@@ -14,6 +14,6 @@ Este projeto é uma API RESTful simples desenvolvida com **Spring Boot**, que re
 - Maven
 
 ---
-## Testandoi a API
+## Testando a API
 - Collection do Postman:
 [Projeto.postman_collection.json](https://github.com/user-attachments/files/21397805/Projeto.postman_collection.json)
