@@ -1,12 +1,12 @@
-package com.projeto.projeto.services;
-
-import org.springframework.stereotype.Service;
-
-import com.projeto.projeto.models.Aluno;
-import com.projeto.projeto.repositories.AlunoRepository;
+package com.projeto.projeto.service;
 
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import com.projeto.projeto.model.Aluno;
+import com.projeto.projeto.repository.AlunoRepository;
 
 @Service
 public class AlunoService {
