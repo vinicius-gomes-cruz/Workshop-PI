@@ -15,52 +15,58 @@ import org.springframework.web.bind.annotation.RestController;
 import com.projeto.projeto.model.Aluno;
 import com.projeto.projeto.service.AlunoService;
 
-@RestController
-@RequestMapping("/alunos")
+@RestController // Define a classe como um controlador REST
+@RequestMapping("/alunos") // Define o caminho base para as rotas dessa classe (endpoint "/alunos")
 public class AlunoController {
 
-    private final AlunoService alunoService;
+    private final AlunoService alunoService; // Injeção de dependência do serviço de alunos
 
+    // Construtor que recebe o serviço de alunos para ser utilizado pelos métodos
     public AlunoController(AlunoService alunoService) {
         this.alunoService = alunoService;
     }
 
-    @GetMapping
+    @GetMapping // Mapeia a requisição GET para "/alunos"
     public List<Aluno> listarTodos() {
-        return alunoService.listarTodos();
+        return alunoService.listarTodos(); // Retorna a lista de todos os alunos
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id}") // Mapeia a requisição GET para "/alunos/{id}"
     public ResponseEntity<Aluno> buscarPorId(@PathVariable Long id) {
+        // Busca o aluno pelo ID e retorna o aluno ou 404 caso não encontre
         return alunoService.buscarPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .map(ResponseEntity::ok) // Se encontrado, retorna o aluno com HTTP 200 OK
+                .orElse(ResponseEntity.notFound().build()); // Se não encontrado, retorna HTTP 404 Not Found
     }
 
-    @PostMapping
+    @PostMapping // Mapeia a requisição POST para "/alunos"
     public Aluno criar(@RequestBody Aluno aluno) {
-        return alunoService.salvar(aluno);
+        return alunoService.salvar(aluno); // Chama o serviço para salvar o aluno e retorna o aluno criado
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}") // Mapeia a requisição DELETE para "/alunos/{id}"
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        // Verifica se o aluno com o ID informado existe
         if (alunoService.buscarPorId(id).isPresent()) {
-            alunoService.deletar(id);
-            return ResponseEntity.noContent().build();
+            alunoService.deletar(id); // Deleta o aluno
+            return ResponseEntity.noContent().build(); // Retorna HTTP 204 No Content para sucesso
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.notFound().build(); // Retorna HTTP 404 Not Found se o aluno não existir
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{id}") // Mapeia a requisição PUT para "/alunos/{id}"
     public ResponseEntity<Aluno> atualizar(@PathVariable Long id, @RequestBody Aluno alunoAtualizado) {
+        // Tenta buscar o aluno pelo ID
         return alunoService.buscarPorId(id)
                 .map(alunoExistente -> {
+                    // Se o aluno existir, atualiza seus dados
                     alunoExistente.setNome(alunoAtualizado.getNome());
                     alunoExistente.setEmail(alunoAtualizado.getEmail());
+                    // Salva as alterações no banco de dados
                     Aluno alunoSalvo = alunoService.salvar(alunoExistente);
-                    return ResponseEntity.ok(alunoSalvo);
+                    return ResponseEntity.ok(alunoSalvo); // Retorna o aluno atualizado com HTTP 200 OK
                 })
-                .orElse(ResponseEntity.notFound().build());
+                .orElse(ResponseEntity.notFound().build()); // Retorna HTTP 404 Not Found se o aluno não for encontrado
     }
 
 }

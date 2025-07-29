@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import com.projeto.projeto.model.Aluno;
 
-@Repository
+@Repository // Indica que essa interface é um componente de repositório no Spring
 public interface AlunoRepository extends JpaRepository<Aluno, Long> {
+    // A interface AlunoRepository estende JpaRepository, que fornece uma série de métodos prontos para interação com o banco de dados
 }
-
