@@ -25,8 +25,17 @@ public class AlunoService {
         return alunoRepository.findById(id); // Chama o método findById() do repositório, que retorna um Optional
     }
 
-    public Aluno salvar(Aluno aluno) {
+        public AlunoModel salvar(AlunoModel aluno) {
         return alunoRepository.save(aluno); // Chama o método save() do repositório para salvar o aluno
+    }
+
+    public AlunoModel atualizar(Long id, AlunoModel dadosAtualizados) {
+        AlunoModel alunoExistente = alunoRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado com ID: " + id));
+
+        alunoExistente.setNome(dadosAtualizados.getNome());
+        alunoExistente.setEmail(dadosAtualizados.getEmail());
+        return alunoRepository.save(alunoExistente);
     }
 
     public void deletar(Long id) {
