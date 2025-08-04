@@ -55,18 +55,9 @@ public class AlunoController {
     }
 
     @PutMapping("/{id}") // Mapeia a requisição PUT para "/alunos/{id}"
-    public ResponseEntity<Aluno> atualizar(@PathVariable Long id, @RequestBody Aluno alunoAtualizado) {
-        // Tenta buscar o aluno pelo ID
-        return alunoService.buscarPorId(id)
-                .map(alunoExistente -> {
-                    // Se o aluno existir, atualiza seus dados
-                    alunoExistente.setNome(alunoAtualizado.getNome());
-                    alunoExistente.setEmail(alunoAtualizado.getEmail());
-                    // Salva as alterações no banco de dados
-                    Aluno alunoSalvo = alunoService.salvar(alunoExistente);
-                    return ResponseEntity.ok(alunoSalvo); // Retorna o aluno atualizado com HTTP 200 OK
-                })
-                .orElse(ResponseEntity.notFound().build()); // Retorna HTTP 404 Not Found se o aluno não for encontrado
+    public ResponseEntity<AlunoModel> atualizar(@PathVariable Long id, @RequestBody AlunoModel alunoAtualizado) {
+        AlunoModel alunoSalvo = alunoService.atualizar(id, alunoAtualizado);
+        return ResponseEntity.ok(alunoSalvo);// Retorna HTTP 404 Not Found se o aluno não for encontrado
     }
 
 }
